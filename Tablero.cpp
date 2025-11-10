@@ -102,6 +102,7 @@ void Tablero::inicializar() {
 
 
    
+
     Casilla* temp = inicio;
     while (temp->siguiente != inicio) {
         temp = temp->siguiente;
@@ -156,3 +157,10 @@ Casilla* Tablero::obtenerCasilla(int indice) const {
     }
     return actual;
 }
+
+
+
+
+
+
+

@@ -1,4 +1,3 @@
-/Users/alfonsovegavilladiego/Desktop/Monopoly Estructuras
 agregarCasilla("Salida (GO)", "Especial");
     agregarCasilla("Avenida Mediterráneo", "Propiedad");
     agregarCasilla("Arca Comunal", "Tarjeta");
