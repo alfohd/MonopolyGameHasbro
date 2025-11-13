@@ -1,0 +1,31 @@
+Casualidad,Avanza hasta la salida (COBRA $200),mover,0
+Casualidad,Ve a la Cárcel (no pases por salida),no_pasa_por_salida,0
+Casualidad,Retrocede tres espacios,mover,-3
+Casualidad,Has sido elegido presidente del consejo, pagar $50 a cada jugador,pagar,50
+Casualidad,Avanza hasta el Ferrocarril Reading si pasas por salida cobra $200,mover,5
+Casualidad,Avanza hasta la Avenida Illinois si pasas por salida cobra $200,mover,24
+Casualidad,Avanza hasta la Avenida San Carlos si pasas por salida cobra $200,mover,11
+Casualidad,La banca te paga un dividendo de $50,cobrar,50
+Casualidad,Sal de la cárcel gratis,carcel_libre,0
+Casualidad,Paga una multa de $15 o usa una carta de cárcel,pagar,15
+Casualidad,Has ganado un premio de belleza, cobra $10,cobrar,10
+Casualidad,Viaja hasta el Ferrocarril más cercano y paga el doble de alquiler si está comprado,mover,5
+Casualidad,Ve hasta la Compañía de Agua y paga el doble de alquiler si está comprada,mover,28
+Casualidad,Tu edificio necesita reparaciones. Paga $25 por casa y $100 por hotel,pagar,25
+Casualidad,Has sido multado por exceso de velocidad, paga $15,pagar,15
+
+Arca Comunal,Avanza hasta la salida y cobra $200,cobrar,200
+Arca Comunal,Ve a la cárcel (no pases por salida),no_pasa_por_salida,0
+Arca Comunal,Recibes $50 por la venta de acciones,cobrar,50
+Arca Comunal,Paga el hospital $100,pagar,100
+Arca Comunal,Paga tu seguro médico $50,pagar,50
+Arca Comunal,Has heredado $100,cobrar,100
+Arca Comunal,Error del banco a tu favor. Cobra $200,cobrar,200
+Arca Comunal,Pagas una multa por reparación de calles $40,pagar,40
+Arca Comunal,Es tu cumpleaños: recibe $10 de cada jugador,cobrar,10
+Arca Comunal,Has ganado el segundo premio en un concurso de belleza,cobrar,10
+Arca Comunal,Recibes un reembolso de impuestos $20,cobrar,20
+Arca Comunal,Vas a cobrar intereses de tus inversiones $25,cobrar,25
+Arca Comunal,Ve directamente a la cárcel,no_pasa_por_salida,0
+Arca Comunal,Sal de la cárcel gratis,carcel_libre,0
+Arca Comunal,Recibes $100 por servicios bancarios,cobrar,100

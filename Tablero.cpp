@@ -1,166 +1,95 @@
 #include "Tablero.h"
+#include <fstream>   // para leer archivos
+#include <sstream>   // para dividir cada línea
 
-/**
- * @brief Constructor del TAD Tablero.
- * @pre Ninguna.
- * @post Se crea un tablero vacío, sin casillas.
- */
-Tablero::Tablero() {
+Tablero::Tablero() { // el constructor fue creado para darle inicio a nuestro tablero vacio y que sea consistente
     inicio = nullptr;
     numCasillas = 0;
 }
 
-/**
- * @brief Destructor del TAD Tablero.
- * @pre El tablero puede tener 0 o más casillas.
- * @post Se libera toda la memoria dinámica usada por las casillas.
- */
 Tablero::~Tablero() {
     if (inicio != nullptr) {
-        Casilla* actual = inicio;
-        Casilla* siguiente;
-        do {
-            siguiente = actual->siguiente;
-            delete actual;
-            actual = siguiente;
-        } while (actual != inicio);
-        inicio = nullptr;
+        Casilla* actual = inicio; // la casilla declara el actual apuntando al primer nodo y este actual lo usaremos para recorrer la lista circular
+        Casilla* siguiente; // declaramos un apuntador que usaremos como auxiliar para el actual
+        do { // iniciamos el ciclo del do while para procesar el primer nodo antes de iniciar el proceso 
+            siguiente = actual->siguiente; // accede al siguiente nodo antes de liberar el actual y evitar que se borre los siguientes nodos, como vimos en clase el caso del TMP
+            delete actual; // libera memoria del actual para guardar espacio para el heap 
+            actual = siguiente; // actual es igual a siguiente ya que creamos siguiente para que se guarde el proceso del apuntador actual
+        } while (actual != inicio); // esto lo repite hasta volver al nodo inicial 
+        inicio = nullptr; // por seguridad 
     }
 }
 
-/**
- * @brief Agrega una nueva casilla al tablero circular.
- * @param nombre Nombre de la casilla.
- * @param tipo Tipo de casilla (Propiedad, Tarjeta, Especial, etc.)
- * @pre nombre y tipo deben ser cadenas válidas.
- * @post Se agrega una nueva casilla al final del tablero circular.
- */
 void Tablero::agregarCasilla(string nombre, string tipo) {
-    Casilla* nueva = new Casilla(numCasillas, nombre, tipo);
+    Casilla* nueva = new Casilla(numCasillas, nombre, tipo); // creamos un objeto new llamado casilla y nueva obtiene la direccion de memoria 
 
     if (inicio == nullptr) {
-        inicio = nueva;
-        nueva->siguiente = inicio;
+        inicio = nueva; // apunta a la nueva casilla que seria la primera 
+        nueva->siguiente = inicio; // por ser circular, la única casilla apunta a sí misma.
     } else {
-        Casilla* temp = inicio;
-        while (temp->siguiente != inicio) {
-            temp = temp->siguiente;
+        Casilla* temp = inicio; // será un cursor para encontrar el último nodo.
+        while (temp->siguiente != inicio) { // recorre la lista hasta el nodo cuyo siguiente vuelve a inicio
+            temp = temp->siguiente; 
         }
-        temp->siguiente = nueva;
-        nueva->siguiente = inicio;
+        temp->siguiente = nueva; // enlaza el último nodo al nuevo.
+        nueva->siguiente = inicio; // nuevo apunta de vuelta al inicio (manteniendo la circularidad).
     }
 
-    numCasillas++;
+    numCasillas++; // incremeta el contador de casillas 
 }
 
-/**
- * @brief Inicializa las 40 casillas del tablero estándar del Monopoly.
- * @pre El tablero debe estar vacío.
- * @post El tablero tiene 40 casillas conectadas circularmente.
- */
-void Tablero::inicializar() {
-    agregarCasilla("Salida (GO)", "Especial");
-    agregarCasilla("Avenida Mediterráneo", "Propiedad");
-    agregarCasilla("Arca Comunal", "Tarjeta");
-    agregarCasilla("Avenida Báltica", "Propiedad");
-    agregarCasilla("Impuesto sobre ingresos", "Especial");
-    agregarCasilla("Ferrocarril Reading", "Propiedad");
-    agregarCasilla("Avenida Oriental", "Propiedad");
-    agregarCasilla("Casualidad", "Tarjeta");
-    agregarCasilla("Avenida Vermont", "Propiedad");
-    agregarCasilla("Avenida Connecticut", "Propiedad");
-    agregarCasilla("Cárcel / Solo de visita", "Especial");
-    agregarCasilla("Plaza San Carlos", "Propiedad");
-    agregarCasilla("Compañía Eléctrica", "Propiedad");
-    agregarCasilla("Avenida de los Estados", "Propiedad");
-    agregarCasilla("Ferrocarril Pennsylvania", "Propiedad");
-    agregarCasilla("Avenida San James", "Propiedad");
-    agregarCasilla("Arca Comunal", "Tarjeta");
-    agregarCasilla("Avenida Tennessee", "Propiedad");
-    agregarCasilla("Avenida Nueva York", "Propiedad");
-    agregarCasilla("Estacionamiento libre", "Especial");
-    agregarCasilla("Avenida Kentucky", "Propiedad");
-    agregarCasilla("Casualidad", "Tarjeta");
-    agregarCasilla("Avenida Indiana", "Propiedad");
-    agregarCasilla("Avenida Illinois", "Propiedad");
-    agregarCasilla("Ferrocarril B&O", "Propiedad");
-    agregarCasilla("Avenida Atlántico", "Propiedad");
-    agregarCasilla("Avenida Ventnor", "Propiedad");
-    agregarCasilla("Compañía de Agua", "Propiedad");
-    agregarCasilla("Jardines Marvin", "Propiedad");
-    agregarCasilla("Ve a la Cárcel", "Especial");
-    agregarCasilla("Avenida Pacífico", "Propiedad");
-    agregarCasilla("Avenida Carolina del Norte", "Propiedad");
-    agregarCasilla("Arca Comunal", "Tarjeta");
-    agregarCasilla("Avenida Pensilvania", "Propiedad");
-    agregarCasilla("Ferrocarril Short Line", "Propiedad");
-    agregarCasilla("Casualidad", "Tarjeta");
-    agregarCasilla("Plaza del Parque", "Propiedad");
-    agregarCasilla("Impuesto de lujo", "Especial");
-    agregarCasilla("Paseo del Muelle", "Propiedad");
-    agregarCasilla("Regreso a Salida", "Especial");
 
-
-   
-
-    Casilla* temp = inicio;
-    while (temp->siguiente != inicio) {
-        temp = temp->siguiente;
-    }
-    temp->siguiente = inicio;
-}
-
-/**
- * @brief Muestra todas las casillas del tablero en orden.
- * @pre El tablero debe estar inicializado.
- * @post Muestra en consola las 40 casillas con su id, nombre y tipo.
- */
-void Tablero::mostrarTablero() const {
-    if (inicio == nullptr) {
-        cout << "El tablero está vacío.\n";
+void Tablero::cargarDesdeArchivo(const string& nombreArchivo) {  // método que lee las casillas desde un archivo de texto.
+    ifstream archivo(nombreArchivo); 
+    if (!archivo.is_open()) { // comprueba apertura; si falla, muestra error y sale.
+        cerr << "Error: no se pudo abrir el archivo " << nombreArchivo << endl; // muestra error y sale 
         return;
     }
 
-    Casilla* actual = inicio;
+    string linea; // comprueba apertura; si falla, muestra error y sale.
+    while (getline(archivo, linea)) { // lee línea por línea hasta EOF. getline descarta el carácter de nueva línea. (eso quiere decir que lee hasta la ultima linea del archivo )
+        stringstream ss(linea); // crea un stream en memoria con la línea para dividir por comas.
+        string idStr, nombre, tipo; // variables temporales para las partes.
+
+        getline(ss, idStr, ','); // lee hasta la primera coma
+        getline(ss, nombre, ','); // la siguiente coma
+        getline(ss, tipo, ','); // la siguiente coma
+
+        
+        if (!nombre.empty() && nombre[0] == ' ') nombre.erase(0, 1); // elimina un posible espacio inicial del nombre
+        if (!tipo.empty() && tipo[0] == ' ') tipo.erase(0, 1); // elimina un espacio si existe 
+
+        agregarCasilla(nombre, tipo); // crea y enlaza la casilla con nombre y tipo. El id será numCasillas antes del incremento
+    }
+
+    archivo.close(); // cierra archivo 
+    cout << "Tablero cargado desde " << nombreArchivo << " con " << numCasillas << " casillas.\n";
+}
+
+void Tablero::mostrarTablero() const { 
+    if (inicio == nullptr) {
+        cout << "El tablero está vacío.\n"; // si esta vacio se sale
+        return;
+    }
+ 
+    Casilla* actual = inicio; // comienza la casilla actual en el inicio
     do {
         cout << actual->id << " - " << actual->nombre << " (" << actual->tipo << ")\n";
-        actual = actual->siguiente;
-    } while (actual != inicio);
+        actual = actual->siguiente; // despues la actual se mueve a la siguiente hasta llegar al inicio y lo muestra
+    } while (actual != inicio); // cilco para que esto funcione
 }
 
-/**
- * @brief Mueve un jugador en el tablero circular.
- * @param posicionActual Posición actual del jugador (0 a 39).
- * @param pasos Cantidad de pasos a avanzar.
- * @return Nueva posición (0 a 39).
- * @pre El tablero debe tener 40 casillas.
- * @post Devuelve la posición final del jugador considerando el ciclo.
- */
-int Tablero::moverJugador(int posicionActual, int pasos) const {
-    if (numCasillas == 0) return -1;
-    return (posicionActual + pasos) % numCasillas;
+int Tablero::moverJugador(int posicionActual, int pasos) const { // metodo const para no modificar nada
+    if (numCasillas == 0) return -1; // protección si tablero vacío.
+    return (posicionActual + pasos) % numCasillas; // aritmética modular para moverse circularmente.
 }
 
-/**
- * @brief Devuelve el puntero a la casilla correspondiente al índice.
- * @param indice Índice de la casilla (0–39).
- * @return Puntero a la casilla o nullptr si no existe.
- * @pre indice >= 0 y < numCasillas.
- * @post Devuelve la dirección de memoria de la casilla solicitada.
- */
-Casilla* Tablero::obtenerCasilla(int indice) const {
-    if (indice < 0 || indice >= numCasillas) return nullptr;
+Casilla* Tablero::obtenerCasilla(int indice) const { // devuelve puntero a la casilla en posición indice.
+    if (indice < 0 || indice >= numCasillas) return nullptr; // valida rango 
 
-    Casilla* actual = inicio;
-    for (int i = 0; i < indice; ++i) {
-        actual = actual->siguiente;
+    Casilla* actual = inicio; // cursor
+    for (int i = 0; i < indice; ++i) { // avanza indice veces desde inicio.
+        actual = actual->siguiente; // devuelve la dirección del nodo.
     }
     return actual;
 }
-
-
-
-
-
-
-
